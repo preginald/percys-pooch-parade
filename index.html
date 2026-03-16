@@ -76,6 +76,7 @@
     transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--terracotta); }
+  .nav-links a.active { color: var(--terracotta); border-bottom: 2px solid var(--terracotta); padding-bottom: 2px; }
 
   /* ========== HERO ========== */
   .hero {
@@ -786,6 +787,20 @@
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
   // Form handler (demo)
+  // Active nav highlighting
+  const navLinks = document.querySelectorAll(".nav-links a");
+  const sections = document.querySelectorAll("section[id]");
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove("active"));
+        const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (active) active.classList.add("active");
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => navObserver.observe(s));
+
   function handleSubmit() {
     document.getElementById('formMsg').style.display = 'block';
   }
