@@ -24,6 +24,65 @@
     --sky-light: #E3F4FC;
     --shadow: rgba(45, 24, 16, 0.08);
     --shadow-md: rgba(45, 24, 16, 0.12);
+    --paw-opacity: 0.15;
+    --paw-opacity-hold: 0.12;
+    --nav-bg: rgba(255, 248, 240, 0.92);
+    --promise-bg: #2D1810;
+    --promise-item-bg: rgba(255, 255, 255, 0.04);
+    --promise-item-border: rgba(255, 255, 255, 0.08);
+    --footer-bg: #2D1810;
+  }
+  [data-theme="dark"] {
+    --cream: #1A1210;
+    --warm-white: #211813;
+    --bark: #F5E6D8;
+    --bark-light: #C4956E;
+    --terracotta: #E8734A;
+    --terracotta-light: #F0997B;
+    --terracotta-pale: #F0997B;
+    --tan: #A07850;
+    --sand: #3A2820;
+    --sage: #7FA882;
+    --sage-dark: #9CC49F;
+    --sage-light: #2A3328;
+    --sky: #87CEEB;
+    --sky-light: #1A2830;
+    --shadow: rgba(0, 0, 0, 0.2);
+    --shadow-md: rgba(0, 0, 0, 0.3);
+    --nav-bg: rgba(26, 18, 16, 0.92);
+    --promise-bg: #0F0A08;
+    --promise-item-bg: rgba(255, 255, 255, 0.06);
+    --promise-item-border: rgba(255, 255, 255, 0.1);
+    --footer-bg: #0F0A08;
+    --paw-opacity: 0.08;
+    --paw-opacity-hold: 0.06;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --cream: #1A1210;
+      --warm-white: #211813;
+      --bark: #F5E6D8;
+      --bark-light: #C4956E;
+      --terracotta: #E8734A;
+      --terracotta-light: #F0997B;
+      --terracotta-pale: #F0997B;
+      --tan: #A07850;
+      --sand: #3A2820;
+      --sage: #7FA882;
+      --sage-dark: #9CC49F;
+      --sage-light: #2A3328;
+      --sky: #87CEEB;
+      --sky-light: #1A2830;
+      --shadow: rgba(0, 0, 0, 0.2);
+      --shadow-md: rgba(0, 0, 0, 0.3);
+      --nav-bg: rgba(26, 18, 16, 0.92);
+      --promise-bg: #0F0A08;
+      --promise-item-bg: rgba(255, 255, 255, 0.06);
+      --promise-item-border: rgba(255, 255, 255, 0.1);
+      --footer-bg: #0F0A08;
+      --paw-opacity: 0.08;
+      --paw-opacity-hold: 0.06;
+    }
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,7 +102,7 @@
     top: 0;
     width: 100%;
     z-index: 100;
-    background: rgba(255, 248, 240, 0.92);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(45, 24, 16, 0.06);
     padding: 12px 0;
@@ -272,6 +331,7 @@
     margin-bottom: 16px;
   }
   .about-stats {
+    align-items: flex-end;
     display: flex;
     gap: 32px;
     margin-top: 28px;
@@ -322,15 +382,15 @@
   .price-card.popular::before {
     content: 'MOST POPULAR';
     position: absolute;
-    top: 16px;
-    right: -32px;
+    top: 12px;
+    right: 12px;
     background: var(--terracotta);
     color: var(--cream);
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 1.5px;
-    padding: 4px 40px;
-    transform: rotate(45deg);
+    padding: 5px 14px;
+    border-radius: 50px;
   }
   .price-icon {
     font-size: 36px;
@@ -387,12 +447,12 @@
 
   /* ========== PROMISE ========== */
   #promise {
-    background: var(--bark);
+    background: var(--promise-bg);
     color: var(--sand);
     text-align: center;
   }
-  #promise .section-label { color: var(--terracotta-pale); }
-  #promise .section-title { color: var(--cream); }
+  #promise .section-label { color: #F0997B; }
+  #promise .section-title { color: #FFF8F0; }
 
   .promise-grid {
     display: grid;
@@ -403,8 +463,8 @@
   .promise-item {
     padding: 32px 24px;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--promise-item-bg);
+    border: 1px solid var(--promise-item-border);
   }
   .promise-icon {
     font-size: 32px;
@@ -414,13 +474,13 @@
     font-family: 'Fredoka', sans-serif;
     font-size: 18px;
     font-weight: 600;
-    color: var(--cream);
+    color: #FFF8F0;
     margin-bottom: 8px;
   }
   .promise-item p {
     font-size: 14px;
     line-height: 1.7;
-    color: var(--tan);
+    color: #C4956E;
   }
 
   /* ========== CONTACT ========== */
@@ -504,8 +564,8 @@
 
   /* ========== FOOTER ========== */
   footer {
-    background: var(--bark);
-    color: var(--tan);
+    background: var(--footer-bg);
+    color: #C4956E;
     text-align: center;
     padding: 40px 24px;
     font-size: 14px;
@@ -513,7 +573,7 @@
   footer .logo-text {
     font-family: 'Fredoka', sans-serif;
     font-size: 20px;
-    color: var(--terracotta-pale);
+    color: #F0997B;
     margin-bottom: 8px;
   }
 
@@ -525,7 +585,8 @@
     .pricing-cards { grid-template-columns: 1fr; max-width: 400px; }
     .promise-grid { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
-    .about-stats { justify-content: center; }
+    .about-stats {
+    align-items: flex-end; justify-content: center; }
     .hero .btn-outline { margin-left: 0; margin-top: 12px; }
   }
 
@@ -553,6 +614,9 @@
       <li><a href="#promise">Our Promise</a></li>
       <li><a href="#contact">Book a Walk</a></li>
     </ul>
+    <button id="themeToggle" onclick="toggleTheme()" style="background:none; border:1.5px solid var(--tan); border-radius:50px; padding:6px 14px; cursor:pointer; font-family:'Nunito',sans-serif; font-size:13px; font-weight:600; color:var(--bark); transition:all 0.2s;" aria-label="Toggle dark mode">
+      <span id="themeIcon">🌙</span>
+    </button>
   </div>
 </nav>
 
@@ -824,6 +888,26 @@
   function handleSubmit() {
     document.getElementById('formMsg').style.display = 'block';
   }
+  // Dark/light mode
+  function getPreferredTheme() {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('themeIcon').textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || getPreferredTheme();
+    const next = current === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', next);
+    applyTheme(next);
+  }
+  applyTheme(getPreferredTheme());
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
+  });
 </script>
 
 </body>
