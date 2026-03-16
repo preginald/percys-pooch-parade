@@ -790,36 +790,41 @@
         </div>
       </div>
       <div class="contact-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Your name</label>
-            <input type="text" placeholder="e.g. Sarah">
+        <form id="contactForm" action="https://formsubmit.co/peter@digitalsanctum.com.au" method="POST">
+          <input type="hidden" name="_subject" value="New walk enquiry from Percy's Pooch Parade!">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your name</label>
+              <input type="text" name="name" placeholder="e.g. Sarah" required>
+            </div>
+            <div class="form-group">
+              <label>Your dog's name</label>
+              <input type="text" name="dog_name" placeholder="e.g. Biscuit" required>
+            </div>
           </div>
           <div class="form-group">
-            <label>Your dog's name</label>
-            <input type="text" placeholder="e.g. Biscuit">
+            <label>Phone number</label>
+            <input type="tel" name="phone" placeholder="0420 479 680" required>
           </div>
-        </div>
-        <div class="form-group">
-          <label>Phone number</label>
-          <input type="tel" placeholder="0420 479 680">
-        </div>
-        <div class="form-group">
-          <label>Which walk?</label>
-          <select>
-            <option value="">Choose a walk...</option>
-            <option value="quick">Quick Walk — 30 min ($10)</option>
-            <option value="adventure">Big Adventure — 60 min ($18)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Anything we should know?</label>
-          <textarea placeholder="Tell me about your dog — breed, quirks, favourite things..."></textarea>
-        </div>
-        <button class="btn btn-primary" style="width:100%" onclick="handleSubmit()">Send Message</button>
-        <div id="formMsg" style="text-align:center; margin-top:12px; font-weight:600; color:var(--sage-dark); display:none;">
-          Thanks! Percy will be in touch soon 🐾
-        </div>
+          <div class="form-group">
+            <label>Which walk?</label>
+            <select name="walk_type" required>
+              <option value="">Choose a walk...</option>
+              <option value="Quick Walk — 30 min ($10)">Quick Walk — 30 min ($10)</option>
+              <option value="Big Adventure — 60 min ($18)">Big Adventure — 60 min ($18)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Anything we should know?</label>
+            <textarea name="message" placeholder="Tell me about your dog — breed, quirks, favourite things..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Send Message</button>
+          <div id="formMsg" style="text-align:center; margin-top:12px; font-weight:600; color:var(--sage-dark); display:none;">
+            Thanks! Percy will be in touch soon 🐾
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -893,9 +898,38 @@
   }, { threshold: 0.3 });
   sections.forEach(s => navObserver.observe(s));
 
-  function handleSubmit() {
-    document.getElementById('formMsg').style.display = 'block';
-  }
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type=submit]');
+    const msg = document.getElementById('formMsg');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(r => {
+      if (r.ok) {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--sage-dark)';
+        msg.textContent = 'Thanks! Percy will be in touch soon \ud83d\udc3e';
+        form.reset();
+      } else {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--terracotta)';
+        msg.textContent = 'Oops! Something went wrong. Please try again.';
+      }
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+    }).catch(() => {
+      msg.style.display = 'block';
+      msg.style.color = 'var(--terracotta)';
+      msg.textContent = 'Oops! Something went wrong. Please try again.';
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+    });
+  });
   // Dark/light mode
   function getPreferredTheme() {
     const stored = localStorage.getItem('theme');
