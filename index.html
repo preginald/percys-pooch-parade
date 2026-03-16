@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percy's Pooch Parade — Ivanhoe Dog Walking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFF8F0;
+    --warm-white: #FFFDF9;
+    --bark: #2D1810;
+    --bark-light: #4A2E1F;
+    --terracotta: #D85A30;
+    --terracotta-light: #E8734A;
+    --terracotta-pale: #F0997B;
+    --tan: #C4956E;
+    --sand: #F5E6D8;
+    --sage: #7FA882;
+    --sage-dark: #5C8A60;
+    --sage-light: #E8F0E4;
+    --sky: #87CEEB;
+    --sky-light: #E3F4FC;
+    --shadow: rgba(45, 24, 16, 0.08);
+    --shadow-md: rgba(45, 24, 16, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--bark);
+    overflow-x: hidden;
+  }
+
+  /* ========== NAV ========== */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(255, 248, 240, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(45, 24, 16, 0.06);
+    padding: 12px 0;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px var(--shadow); }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-logo {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--bark); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--bark-light);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(127, 168, 130, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(216, 90, 48, 0.06) 0%, transparent 50%),
+      var(--cream);
+  }
+
+  /* Animated paw prints background */
+  .paw-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .paw-bg .paw {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0;
+    animation: pawFloat 8s ease-in-out infinite;
+  }
+  @keyframes pawFloat {
+    0% { opacity: 0; transform: translateY(30px) rotate(-15deg); }
+    15% { opacity: 0.12; }
+    85% { opacity: 0.12; }
+    100% { opacity: 0; transform: translateY(-30px) rotate(15deg); }
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--sage-light);
+    color: var(--sage-dark);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 600;
+    line-height: 1.05;
+    color: var(--bark);
+    margin-bottom: 8px;
+  }
+  .hero h1 .highlight {
+    color: var(--terracotta);
+    position: relative;
+  }
+
+  .hero-tagline {
+    font-size: 20px;
+    color: var(--tan);
+    font-weight: 600;
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--bark-light);
+    margin-bottom: 40px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.5px;
+  }
+  .btn-primary {
+    background: var(--terracotta);
+    color: var(--cream);
+    box-shadow: 0 4px 16px rgba(216, 90, 48, 0.3);
+  }
+  .btn-primary:hover {
+    background: var(--terracotta-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(216, 90, 48, 0.35);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--terracotta);
+    border: 2px solid var(--terracotta);
+    margin-left: 12px;
+  }
+  .btn-outline:hover {
+    background: var(--terracotta);
+    color: var(--cream);
+  }
+
+  .hero-paw-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+  }
+
+  /* ========== SECTIONS ========== */
+  section { padding: 80px 24px; }
+  .section-inner { max-width: 1000px; margin: 0 auto; }
+
+  .section-label {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: clamp(32px, 5vw, 44px);
+    color: var(--bark);
+    margin-bottom: 16px;
+    line-height: 1.15;
+  }
+  .section-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--bark-light);
+    max-width: 560px;
+  }
+
+  /* ========== ABOUT ========== */
+  #about {
+    background: var(--warm-white);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 40px;
+  }
+  .about-illustration {
+    background: linear-gradient(135deg, var(--sage-light) 0%, var(--sky-light) 100%);
+    border-radius: 24px;
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-illustration::before {
+    content: '🐕';
+    font-size: 120px;
+    filter: grayscale(0.2);
+  }
+  .about-text h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--bark);
+  }
+  .about-text p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--bark-light);
+    margin-bottom: 16px;
+  }
+  .about-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 28px;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--terracotta);
+  }
+  .stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--tan);
+    letter-spacing: 0.5px;
+  }
+
+  /* ========== SERVICES / PRICING ========== */
+  #services {
+    background: var(--cream);
+  }
+  .pricing-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 48px;
+    max-width: 700px;
+  }
+  .price-card {
+    background: var(--warm-white);
+    border-radius: 20px;
+    padding: 36px 32px;
+    border: 1px solid rgba(45, 24, 16, 0.06);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px var(--shadow-md);
+  }
+  .price-card.popular {
+    border: 2px solid var(--terracotta);
+  }
+  .price-card.popular::before {
+    content: 'MOST POPULAR';
+    position: absolute;
+    top: 16px;
+    right: -32px;
+    background: var(--terracotta);
+    color: var(--cream);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 4px 40px;
+    transform: rotate(45deg);
+  }
+  .price-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+  .price-name {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--bark);
+    margin-bottom: 4px;
+  }
+  .price-duration {
+    font-size: 14px;
+    color: var(--tan);
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .price-amount {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--terracotta);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-amount span {
+    font-size: 18px;
+    color: var(--tan);
+    font-weight: 400;
+  }
+  .price-per {
+    font-size: 14px;
+    color: var(--tan);
+    margin-bottom: 24px;
+  }
+  .price-features {
+    list-style: none;
+  }
+  .price-features li {
+    font-size: 15px;
+    color: var(--bark-light);
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .price-features li::before {
+    content: '✓';
+    color: var(--sage);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* ========== PROMISE ========== */
+  #promise {
+    background: var(--bark);
+    color: var(--sand);
+    text-align: center;
+  }
+  #promise .section-label { color: var(--terracotta-pale); }
+  #promise .section-title { color: var(--cream); }
+
+  .promise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 48px;
+  }
+  .promise-item {
+    padding: 32px 24px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .promise-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+  .promise-item h4 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .promise-item p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--tan);
+  }
+
+  /* ========== CONTACT ========== */
+  #contact {
+    background: var(--warm-white);
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 40px;
+  }
+  .contact-info h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  .contact-info p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--bark-light);
+    margin-bottom: 20px;
+  }
+  .contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--bark);
+  }
+  .contact-detail .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .contact-detail .icon.phone { background: var(--sage-light); }
+  .contact-detail .icon.area { background: var(--sky-light); }
+
+  .contact-form {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 36px;
+    border: 1px solid rgba(45, 24, 16, 0.06);
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: var(--bark);
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(45, 24, 16, 0.12);
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    background: var(--warm-white);
+    color: var(--bark);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--terracotta);
+  }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    background: var(--bark);
+    color: var(--tan);
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 14px;
+  }
+  footer .logo-text {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 20px;
+    color: var(--terracotta-pale);
+    margin-bottom: 8px;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .about-grid,
+    .contact-grid { grid-template-columns: 1fr; }
+    .pricing-cards { grid-template-columns: 1fr; max-width: 400px; }
+    .promise-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .about-stats { justify-content: center; }
+    .hero .btn-outline { margin-left: 0; margin-top: 12px; }
+  }
+
+  /* ========== ANIMATIONS ========== */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><span>Percy's</span> Pooch Parade</a>
+    <ul class="nav-links">
+      <li><a href="#about">About Percy</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#promise">Our Promise</a></li>
+      <li><a href="#contact">Book a Walk</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="paw-bg" id="pawBg"></div>
+  <div class="hero-content">
+    <div class="hero-paw-icon">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="40" cy="52" rx="22" ry="18" fill="#D85A30"/>
+        <circle cx="20" cy="30" r="10" fill="#D85A30"/>
+        <circle cx="36" cy="22" r="10" fill="#D85A30"/>
+        <circle cx="52" cy="22" r="10" fill="#D85A30"/>
+        <circle cx="64" cy="32" r="9" fill="#D85A30"/>
+      </svg>
+    </div>
+    <div class="hero-badge">Ivanhoe's favourite dog walker</div>
+    <h1>Percy's<br><span class="highlight">Pooch Parade</span></h1>
+    <p class="hero-tagline">Happy dogs. Happy walks. Happy you.</p>
+    <p class="hero-desc">
+      Hi, I'm Percy! I'm 10 years old and I absolutely love dogs.
+      I walk pooches around beautiful Ivanhoe so your furry friend gets the
+      exercise, fresh air, and belly rubs they deserve.
+    </p>
+    <div>
+      <a href="#contact" class="btn btn-primary">Book a Walk</a>
+      <a href="#services" class="btn btn-outline">See Prices</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <div class="section-title">Meet Percy</div>
+    <div class="about-grid fade-up">
+      <div class="about-illustration"></div>
+      <div class="about-text">
+        <h3>Your neighbourhood dog walker</h3>
+        <p>
+          I'm Perseus — but everyone calls me Percy. I live right here in Ivanhoe
+          and I've loved dogs for as long as I can remember. When I'm not at school,
+          you'll find me at the park with a four-legged friend (or three!).
+        </p>
+        <p>
+          I started Percy's Pooch Parade because I believe every dog deserves an
+          awesome walk with someone who truly cares. I treat every pooch like
+          they're my own — with patience, energy, and plenty of treats (with your permission, of course!).
+        </p>
+        <div class="about-stats">
+          <div class="stat">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Dog Lover</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">5★</div>
+            <div class="stat-label">Enthusiasm</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Belly Rubs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-label">Services & Pricing</div>
+    <div class="section-title">Simple, fair pricing</div>
+    <p class="section-desc">
+      Choose the walk that suits your pooch. All walks include pick-up and
+      drop-off from your door in the Ivanhoe area.
+    </p>
+    <div class="pricing-cards fade-up">
+      <!-- Quick Walk -->
+      <div class="price-card">
+        <div class="price-icon">🐾</div>
+        <div class="price-name">Quick Walk</div>
+        <div class="price-duration">30 minutes</div>
+        <div class="price-amount">$10 <span>/ walk</span></div>
+        <div class="price-per">Perfect for a quick stretch</div>
+        <ul class="price-features">
+          <li>30-minute neighbourhood walk</li>
+          <li>Pick-up & drop-off at your door</li>
+          <li>Fresh water provided</li>
+          <li>Post-walk update text</li>
+        </ul>
+      </div>
+      <!-- Big Adventure -->
+      <div class="price-card popular">
+        <div class="price-icon">🦮</div>
+        <div class="price-name">Big Adventure</div>
+        <div class="price-duration">60 minutes</div>
+        <div class="price-amount">$18 <span>/ walk</span></div>
+        <div class="price-per">The full Percy experience</div>
+        <ul class="price-features">
+          <li>60-minute park & trail walk</li>
+          <li>Pick-up & drop-off at your door</li>
+          <li>Fresh water & treat (if allowed)</li>
+          <li>Post-walk photo & update</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE -->
+<section id="promise">
+  <div class="section-inner">
+    <div class="section-label">Our promise</div>
+    <div class="section-title">Why trust Percy?</div>
+    <div class="promise-grid fade-up">
+      <div class="promise-item">
+        <div class="promise-icon">🏠</div>
+        <h4>Local & reliable</h4>
+        <p>I live right here in Ivanhoe. I'm not going anywhere — your pooch's walker is just around the corner.</p>
+      </div>
+      <div class="promise-item">
+        <div class="promise-icon">📱</div>
+        <h4>Updates every walk</h4>
+        <p>You'll get a text (or photo!) after every single walk so you know your dog had an amazing time.</p>
+      </div>
+      <div class="promise-item">
+        <div class="promise-icon">❤️</div>
+        <h4>Genuine dog lover</h4>
+        <p>This isn't just a job for me — I do this because I genuinely love spending time with dogs. Every dog gets my full attention.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Get in touch</div>
+    <div class="section-title">Book a walk</div>
+    <div class="contact-grid fade-up">
+      <div class="contact-info">
+        <h3>Ready to give your pooch the best walk ever?</h3>
+        <p>
+          Drop me a message using the form, or give us a call.
+          I'll get back to you as soon as I can to arrange your
+          dog's first Percy's Pooch Parade adventure!
+        </p>
+        <div class="contact-detail">
+          <div class="icon phone">📞</div>
+          <div>
+            <div style="font-size:13px; color:var(--tan); font-weight:400;">Call or text</div>
+            <div>0400 000 000</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="icon area">📍</div>
+          <div>
+            <div style="font-size:13px; color:var(--tan); font-weight:400;">Service area</div>
+            <div>Ivanhoe, VIC</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your name</label>
+            <input type="text" placeholder="e.g. Sarah">
+          </div>
+          <div class="form-group">
+            <label>Your dog's name</label>
+            <input type="text" placeholder="e.g. Biscuit">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone number</label>
+          <input type="tel" placeholder="0400 000 000">
+        </div>
+        <div class="form-group">
+          <label>Which walk?</label>
+          <select>
+            <option value="">Choose a walk...</option>
+            <option value="quick">Quick Walk — 30 min ($10)</option>
+            <option value="adventure">Big Adventure — 60 min ($18)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Anything we should know?</label>
+          <textarea placeholder="Tell me about your dog — breed, quirks, favourite things..."></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="handleSubmit()">Send Message</button>
+        <div id="formMsg" style="text-align:center; margin-top:12px; font-weight:600; color:var(--sage-dark); display:none;">
+          Thanks! Percy will be in touch soon 🐾
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo-text">Percy's Pooch Parade</div>
+  <p>Ivanhoe's favourite dog walker &middot; ABN coming soon</p>
+  <p style="margin-top:8px; font-size:12px; opacity:0.6;">&copy; 2026 Percy's Pooch Parade. All rights reserved.</p>
+</footer>
+
+<script>
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Animated paw prints in hero
+  const pawBg = document.getElementById('pawBg');
+  const pawPositions = [
+    {x:8,y:15},{x:72,y:22},{x:25,y:65},{x:85,y:70},{x:45,y:40},
+    {x:15,y:85},{x:65,y:50},{x:90,y:35},{x:35,y:20},{x:55,y:80}
+  ];
+  pawPositions.forEach((pos, i) => {
+    const paw = document.createElement('div');
+    paw.className = 'paw';
+    paw.textContent = '🐾';
+    paw.style.left = pos.x + '%';
+    paw.style.top = pos.y + '%';
+    paw.style.animationDelay = (i * 1.2) + 's';
+    paw.style.fontSize = (20 + Math.random() * 16) + 'px';
+    pawBg.appendChild(paw);
+  });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Form handler (demo)
+  function handleSubmit() {
+    document.getElementById('formMsg').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
