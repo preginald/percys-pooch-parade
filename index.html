@@ -94,24 +94,28 @@
       var(--cream);
   }
 
-  /* Animated paw prints background */
+  /* Walking paw print trails */
   .paw-bg {
     position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
   }
-  .paw-bg .paw {
+  .paw-print {
     position: absolute;
-    font-size: 28px;
     opacity: 0;
-    animation: pawFloat 8s ease-in-out infinite;
+    animation: pawStamp var(--trail-duration, 12s) ease infinite;
+    animation-delay: var(--stamp-delay, 0s);
   }
-  @keyframes pawFloat {
-    0% { opacity: 0; transform: translateY(30px) rotate(-15deg); }
-    15% { opacity: 0.12; }
-    85% { opacity: 0.12; }
-    100% { opacity: 0; transform: translateY(-30px) rotate(15deg); }
+  .paw-print svg {
+    fill: var(--terracotta);
+  }
+  @keyframes pawStamp {
+    0% { opacity: 0; transform: scale(0.6) rotate(var(--paw-rot, 0deg)); }
+    3% { opacity: 0.15; transform: scale(1) rotate(var(--paw-rot, 0deg)); }
+    12% { opacity: 0.12; transform: scale(1) rotate(var(--paw-rot, 0deg)); }
+    18% { opacity: 0; transform: scale(1) rotate(var(--paw-rot, 0deg)); }
+    100% { opacity: 0; }
   }
 
   .hero-content { position: relative; z-index: 2; max-width: 680px; }
@@ -763,21 +767,37 @@
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
   });
 
-  // Animated paw prints in hero
-  const pawBg = document.getElementById('pawBg');
-  const pawPositions = [
-    {x:8,y:15},{x:72,y:22},{x:25,y:65},{x:85,y:70},{x:45,y:40},
-    {x:15,y:85},{x:65,y:50},{x:90,y:35},{x:35,y:20},{x:55,y:80}
+  // Walking paw print trails
+  const pawBg = document.getElementById("pawBg");
+  const pawSvg = (size, mirror) => {
+    const s = mirror ? `transform="scale(-1,1) translate(-48,0)"` : "";
+    return `<svg width="${size}" height="${size}" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g ${s}><ellipse cx="24" cy="30" rx="10" ry="8"/><circle cx="14" cy="18" r="4.5"/><circle cx="21" cy="14" r="4.5"/><circle cx="29" cy="14" r="4.5"/><circle cx="35" cy="19" r="4"/></g></svg>`;
+  };
+  const trails = [
+    {startX:5, startY:15, angle:12, size:24, steps:10, duration:16, delay:0},
+    {startX:60, startY:8, angle:18, size:16, steps:8, duration:14, delay:4},
+    {startX:20, startY:55, angle:-8, size:28, steps:10, duration:20, delay:2},
+    {startX:70, startY:50, angle:15, size:14, steps:7, duration:12, delay:7},
+    {startX:40, startY:75, angle:-12, size:20, steps:9, duration:18, delay:5},
   ];
-  pawPositions.forEach((pos, i) => {
-    const paw = document.createElement('div');
-    paw.className = 'paw';
-    paw.textContent = '🐾';
-    paw.style.left = pos.x + '%';
-    paw.style.top = pos.y + '%';
-    paw.style.animationDelay = (i * 1.2) + 's';
-    paw.style.fontSize = (20 + Math.random() * 16) + 'px';
-    pawBg.appendChild(paw);
+  trails.forEach(t => {
+    const stepSpacingX = 3.5;
+    const stepSpacingY = t.angle / t.steps;
+    for (let i = 0; i < t.steps; i++) {
+      const isLeft = i % 2 === 0;
+      const paw = document.createElement("div");
+      paw.className = "paw-print";
+      paw.innerHTML = pawSvg(t.size, isLeft);
+      const x = t.startX + (i * stepSpacingX);
+      const y = t.startY + (i * stepSpacingY) + (isLeft ? -1.2 : 1.2);
+      const rot = 90 + t.angle + (isLeft ? -15 : 15);
+      paw.style.left = x + "%";
+      paw.style.top = y + "%";
+      paw.style.setProperty("--paw-rot", rot + "deg");
+      paw.style.setProperty("--trail-duration", t.duration + "s");
+      paw.style.setProperty("--stamp-delay", (t.delay + i * (t.duration / t.steps * 0.18)) + "s");
+      pawBg.appendChild(paw);
+    }
   });
 
   // Fade-in on scroll
